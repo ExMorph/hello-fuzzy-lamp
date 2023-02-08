@@ -1,0 +1,15 @@
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\bin\Debug\net7.0\Hello Fuzzy Lamp.exe
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\bin\Debug\net7.0\Hello Fuzzy Lamp.deps.json
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\bin\Debug\net7.0\Hello Fuzzy Lamp.runtimeconfig.json
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\bin\Debug\net7.0\Hello Fuzzy Lamp.dll
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\bin\Debug\net7.0\Hello Fuzzy Lamp.pdb
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.csproj.AssemblyReference.cache
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.GeneratedMSBuildEditorConfig.editorconfig
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.AssemblyInfoInputs.cache
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.AssemblyInfo.cs
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.csproj.CoreCompileInputs.cache
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.dll
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\refint\Hello Fuzzy Lamp.dll
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.pdb
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\Hello Fuzzy Lamp.genruntimeconfig.cache
+D:\PraxisVR\hello-fuzzy-lamp\Hello Fuzzy Lamp\obj\Debug\net7.0\ref\Hello Fuzzy Lamp.dll
