@@ -59,20 +59,58 @@ internal class Program
             Console.WriteLine(ex.Message);
         }
     }
+    public static int ReadLineInt()
+    {
+        int checkedNum = 0;
+        for (bool thisIsInt = false; thisIsInt == false; )
+        {
+            thisIsInt = int.TryParse(Console.ReadLine(), out checkedNum);
+            switch (thisIsInt)
+            {
+                case true:
+                    break;
+                case false:
+                    Console.WriteLine("Цифру пожалуйста, БЕЗ букв и БЕЗ значений после запятой");
+                    break;   
+            }
+        }
+        return checkedNum;
+    }
 
     static void Game()
     {
-        Console.WriteLine("Добро пожаловать в Утраченный клад! \n\nПожалуйста, введите следующие данные для настройки приключения");
+        Console.WriteLine("Добро пожаловать в Утраченный клад!\n");
+        Console.WriteLine("Пожалуйста, введите следующие данные для настройки приключения");
         Console.WriteLine("Введите целое число:");
-        try
+        int num1 = ReadLineInt();
+        Console.WriteLine("Ведите число, меньше предыдущего:");
+        //int num2 = ReadLineInt();
+        #region Check num1 > num2
+        for (int num2 = 0; num1 < num2; num2 = ReadLineInt())
         {
-            int num1;
-            num1 = checked(Convert.ToInt32(Console.ReadLine()));
+            switch (num1 < num2)
+            {
+                case true:
+                    Console.WriteLine($"{num1} + {num2}");
+                    break;
+                case false:
+                    Console.WriteLine("Значение должно быть меньше предыдущего!");
+                    break;
+            }
         }
-        catch (OverflowException ex)
+        #endregion
+        //
+
+        #region Restart Game
+        Console.WriteLine("Перезапустить игру?\nY/N");
+        if (Console.ReadLine() == "Y")
         {
-            Console.WriteLine("Введите ЦЕЛОЕ число, БЕЗ букв и БЕЗ значений после запято");
+            Game();
         }
-        
+        else
+        {
+            Console.WriteLine("Пока");
+        }
+        #endregion
     }
 }
