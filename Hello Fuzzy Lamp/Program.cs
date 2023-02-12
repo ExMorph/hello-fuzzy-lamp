@@ -4,14 +4,15 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        Game();
+    }
+
+    static void HelloBoy()
+    {
         Console.Write("Введите свое имя: ");
         var name = Console.ReadLine();
         Console.WriteLine($"Привет {name}");
-        LiteralsCheck();
-        CheckOperand();
-        LostData();
     }
-
     static void LiteralsCheck()
     {
         Console.WriteLine("Любишь какать?"+'\n'+ "Люби и ж" + '\x48' + "пу подмывать!");
@@ -41,7 +42,7 @@ internal class Program
         b = (byte)b;
         Console.WriteLine($"Стало в byte {a} + {b} = {a + b}");
 
-        byte c = checked((byte)(a + b));
+        byte c = (byte)(a + b);
         Console.WriteLine(c);
 
         try
@@ -57,5 +58,21 @@ internal class Program
         {
             Console.WriteLine(ex.Message);
         }
+    }
+
+    static void Game()
+    {
+        Console.WriteLine("Добро пожаловать в Утраченный клад! \n\nПожалуйста, введите следующие данные для настройки приключения");
+        Console.WriteLine("Введите целое число:");
+        try
+        {
+            int num1;
+            num1 = checked(Convert.ToInt32(Console.ReadLine()));
+        }
+        catch (OverflowException ex)
+        {
+            Console.WriteLine("Введите ЦЕЛОЕ число, БЕЗ букв и БЕЗ значений после запято");
+        }
+        
     }
 }
