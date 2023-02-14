@@ -92,6 +92,7 @@ internal class Program
 
         Console.WriteLine("Введите число меньше предыдущего:");
         #region Check num1 > num2
+
         int num2 = ReadLineInt();
         while (num1 <= num2)
         {
@@ -136,6 +137,7 @@ internal class Program
             $" Нашим героям удалось отбиться, но ценой жизни {num2} товарищей." +
             $" Всего в живых осталось {alivePiligrimms -= num2} приключенцев.");
 
+        #region Проверка остатка после деления
 
         if (goldFinded % (num1 - num2) > 0)
         {
@@ -155,9 +157,11 @@ internal class Program
             $" Они нашли сундук, в котором было {goldFinded} монет." +
             $" {playerName} разделил золото поровну между всеми, а оставшиеся {goldFinded % (num1 - num2)} монет оставил себе.\n Жадный пидорюга!");
         }
-
+        #endregion
 
         Console.WriteLine($"Однако золото было проклято!");
+
+        #region Действие проклятия / Проверка живых приключенцев
 
         while (alivePiligrimms >= 1) 
         {
@@ -180,6 +184,7 @@ internal class Program
                 Console.WriteLine($"Что-то пошло не так, но мы уверены, что {playerName} остался жив.");
             }
         }
+        #endregion
 
         Console.WriteLine("Конец!");
     }
