@@ -4,9 +4,9 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Game();
-        while (AskRestartGame())
-            Game();
+        GameLife();
+        //while (AskRestartGame())
+        //    GameLife();
     }
 
     static void HelloBoy()
@@ -79,7 +79,39 @@ internal class Program
         return checkedNum;
     }
 
-    static void Game()
+    static void GameLife()
+    {
+        //int[,,] mas = { { { 1, 2 },{ 3, 4 } },
+        //        { { 4, 5 }, { 6, 7 } },
+        //        { { 7, 8 }, { 9, 10 } },
+        //        { { 10, 11 }, { 12, 13 } }
+        //      };
+
+        int[,] mas = { { 0, 1, 2 }, { 3, 4, 5 } };
+
+        //Console.WriteLine(mas[3,1,1]);
+
+        int rows = mas.GetUpperBound(0) + 1;    // количество строк
+        int columns = mas.Length / rows;        // количество столбцов
+
+        Console.Write($"{rows} \t");
+        Console.Write($"{columns} \t");
+        Console.WriteLine($"{mas[1, 1]} \t");
+
+        Console.WriteLine($"Перебор");
+
+        foreach (int i in mas)
+            Console.Write($"{i} ");
+        for (int i = 0; i < rows; i++)
+        {
+            //Console.Write($"{mas} \t");
+            //Console.WriteLine($"{mas[0,0,i]} \t");
+        }
+
+        //{{{1 , 2} , {3 , 4}} , {{4 , 5} , {6 , 7}} , {{7 , 8}, {9 , 10}} , {{10 , 11} , {12 , 13}}}
+    }
+
+    static void GameMoney()
     {
         const int goldFinded = 900;
         int alivePiligrimms;
