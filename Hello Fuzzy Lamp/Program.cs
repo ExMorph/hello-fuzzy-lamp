@@ -81,34 +81,71 @@ internal class Program
 
     static void GameLife()
     {
-        //int[,,] mas = { { { 1, 2 },{ 3, 4 } },
-        //        { { 4, 5 }, { 6, 7 } },
-        //        { { 7, 8 }, { 9, 10 } },
-        //        { { 10, 11 }, { 12, 13 } }
-        //      };
+        Console.WriteLine("Введите размер сетки");
+        int massSize = ReadLineInt();
 
-        int[,] mas = { { 0, 1, 2 }, { 3, 4, 5 } };
+        int[,] mas = new int[massSize, massSize];
 
-        //Console.WriteLine(mas[3,1,1]);
+        int x = mas.GetUpperBound(0);
+        int y = mas.GetUpperBound(1);
+        Console.WriteLine($"x = {x} y = {y}");
 
-        int rows = mas.GetUpperBound(0) + 1;    // количество строк
-        int columns = mas.Length / rows;        // количество столбцов
-
-        Console.Write($"{rows} \t");
-        Console.Write($"{columns} \t");
-        Console.WriteLine($"{mas[1, 1]} \t");
-
-        Console.WriteLine($"Перебор");
-
-        foreach (int i in mas)
-            Console.Write($"{i} ");
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i <= x; i++)
         {
-            //Console.Write($"{mas} \t");
-            //Console.WriteLine($"{mas[0,0,i]} \t");
+            Console.Write($"\n");
+            for (int j = 0; j <= y; j++)
+            {
+                mas[i, j] = new Random().Next(0,2);
+            }
+            
         }
 
-        //{{{1 , 2} , {3 , 4}} , {{4 , 5} , {6 , 7}} , {{7 , 8}, {9 , 10}} , {{10 , 11} , {12 , 13}}}
+        Console.WriteLine("\nВведите S");
+        while ("S" == Console.ReadLine())
+            GameLifeCycle(mas);
+    }
+
+    static void GameLifeCycle(int[,] mas)
+    {
+        int x = mas.GetUpperBound(0);
+        int y = mas.GetUpperBound(1);
+
+        for (int i = 0; i <= x; i++)
+        {
+            Console.Write($"\n");
+            for (int j = 0; j <= y; j++)
+            {
+                Console.Write(mas[i, j]);
+            }
+
+        }
+        int livingТeighbor = 0;
+        for (int i = 0; i <= x; i++)
+        {
+            Console.Write($"\n");
+            for (int j = 0; j <= y; j++)
+            {
+                //livingТeighbor = 0;
+                //Check self
+                //if (mas[i, j] == 1) livingТeighbor++;
+                //1st line
+                if (mas[i - 1, j - 1] != null) 
+                    if(mas[i - 1, j - 1] == 1)  
+                        livingТeighbor++;
+                if (mas[i - 1, j] != null && mas[i - 1, j] == 1) livingТeighbor++;
+                if (mas[i - 1, j + 1] != null && mas[i - 1, j + 1] == 1) livingТeighbor++;
+                //2nd line
+                if (mas[i, j - 1] != null && mas[i, j-1] == 1) livingТeighbor++;
+                if (mas[i, j + 1] != null && mas[i, j + 1] == 1) livingТeighbor++;
+                //3rd line
+                if (mas[i + 1, j - 1] != null && mas[i + 1, j - 1] == 1) livingТeighbor++;
+                if (mas[i + 1, j] != null && mas[i + 1, j] == 1) livingТeighbor++;
+                if (mas[i + 1, j + 1] != null && mas[i + 1, j + 1] == 1) livingТeighbor++;
+                Console.Write(mas[i, j]);
+                Console.Write("Living Heighbors = "+livingТeighbor);
+            }
+
+        }
     }
 
     static void GameMoney()
