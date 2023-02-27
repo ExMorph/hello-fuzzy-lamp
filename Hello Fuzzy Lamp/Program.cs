@@ -90,6 +90,7 @@ internal class Program
         int y = mas.GetUpperBound(1);
         Console.WriteLine($"x = {x} y = {y}");
 
+        //Рандомизация значений
         for (int i = 0; i <= x; i++)
         {
             Console.Write($"\n");
@@ -110,6 +111,7 @@ internal class Program
         int x = mas.GetUpperBound(0);
         int y = mas.GetUpperBound(1);
 
+        //Рисование картины
         for (int i = 0; i <= x; i++)
         {
             Console.Write($"\n");
@@ -119,30 +121,29 @@ internal class Program
             }
 
         }
+        
+        //Подсчет соседей
         int livingТeighbor = 0;
         for (int i = 0; i <= x; i++)
         {
             Console.Write($"\n");
             for (int j = 0; j <= y; j++)
             {
-                //livingТeighbor = 0;
                 //Check self
                 //if (mas[i, j] == 1) livingТeighbor++;
                 //1st line
-                if (mas[i - 1, j - 1] != null) 
-                    if(mas[i - 1, j - 1] == 1)  
-                        livingТeighbor++;
-                if (mas[i - 1, j] != null && mas[i - 1, j] == 1) livingТeighbor++;
-                if (mas[i - 1, j + 1] != null && mas[i - 1, j + 1] == 1) livingТeighbor++;
+                if (mas[i - 1, j - 1] == 1) livingТeighbor++;
+                //string pageTitle = suppliedTitle ?? "Default Title";
+                if (mas[i - 1, j] == 1) livingТeighbor++;
+                if (mas[i - 1, j + 1] == 1) livingТeighbor++;
                 //2nd line
-                if (mas[i, j - 1] != null && mas[i, j-1] == 1) livingТeighbor++;
-                if (mas[i, j + 1] != null && mas[i, j + 1] == 1) livingТeighbor++;
+                if (mas[i, j-1] == 1) livingТeighbor++;
+                if (mas[i, j + 1] == 1) livingТeighbor++;
                 //3rd line
-                if (mas[i + 1, j - 1] != null && mas[i + 1, j - 1] == 1) livingТeighbor++;
-                if (mas[i + 1, j] != null && mas[i + 1, j] == 1) livingТeighbor++;
-                if (mas[i + 1, j + 1] != null && mas[i + 1, j + 1] == 1) livingТeighbor++;
+                if (mas[i + 1, j - 1] == 1) livingТeighbor++;
+                if (mas[i + 1, j] == 1) livingТeighbor++;
+                if (mas[i + 1, j + 1] == 1) livingТeighbor++;
                 Console.Write(mas[i, j]);
-                Console.Write("Living Heighbors = "+livingТeighbor);
             }
 
         }
