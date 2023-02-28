@@ -93,7 +93,6 @@ internal class Program
         //Рандомизация значений
         for (int i = 0; i <= x; i++)
         {
-            Console.Write($"\n");
             for (int j = 0; j <= y; j++)
             {
                 mas[i, j] = new Random().Next(0,2);
@@ -102,7 +101,7 @@ internal class Program
         }
 
         Console.WriteLine("\nВведите S");
-        while ("S" == Console.ReadLine())
+        while ("S" != Console.ReadLine())
             GameLifeCycle(mas);
     }
 
@@ -121,32 +120,80 @@ internal class Program
             }
 
         }
-        
+
         //Подсчет соседей
-        int livingТeighbor = 0;
-        for (int i = 0; i <= x; i++)
+        Console.Write('\n');
+        int[,] masTemp = mas;
+
+        for (int _x = 0; _x <= x; _x++)
         {
-            Console.Write($"\n");
-            for (int j = 0; j <= y; j++)
+            Console.Write('\n');
+            for (int _y = 0; _y <= y; _y++)
             {
-                //Check self
-                //if (mas[i, j] == 1) livingТeighbor++;
+                int livingHeighbor = 0;
+                
                 //1st line
-                if (mas[i - 1, j - 1] == 1) livingТeighbor++;
-                //string pageTitle = suppliedTitle ?? "Default Title";
-                if (mas[i - 1, j] == 1) livingТeighbor++;
-                if (mas[i - 1, j + 1] == 1) livingТeighbor++;
+                if (_x > 0)
+                {
+                    if (_y > 0)
+                        if (mas[_x - 1, _y - 1] > 0) 
+                            livingHeighbor++;
+
+                    if (mas[_x - 1, _y] > 0) 
+                        livingHeighbor++;
+
+                    if (_y < y)
+                        if (mas[_x - 1, _y + 1] > 0) 
+                            livingHeighbor++;
+                }
+
                 //2nd line
-                if (mas[i, j-1] == 1) livingТeighbor++;
-                if (mas[i, j + 1] == 1) livingТeighbor++;
+                if (_y > 0) 
+                    if (mas[_x, _y - 1] > 0) 
+                        livingHeighbor++;
+
+                if (_y < y) 
+                    if (mas[_x, _y + 1] > 0) 
+                        livingHeighbor++;
+                
                 //3rd line
-                if (mas[i + 1, j - 1] == 1) livingТeighbor++;
-                if (mas[i + 1, j] == 1) livingТeighbor++;
-                if (mas[i + 1, j + 1] == 1) livingТeighbor++;
-                Console.Write(mas[i, j]);
+                if (_x < x)
+                {
+                    if (_y > 0)
+                        if (mas[_x + 1, _y - 1] > 0) 
+                            livingHeighbor++;
+
+                    if (mas[_x + 1, _y] > 0) 
+                        livingHeighbor++;
+
+                    if (_y < y)
+                        if (mas[_x + 1, _y + 1] > 0) 
+                            livingHeighbor++;
+                }
+
+                //Check неживая
+                if (mas[_x, _y] == 0 && livingHeighbor >= 3)
+                {
+                    masTemp[_x, _y] = 1;
+                }
+                //Check живая
+                else if (mas[_x, _y] > 0)
+                {
+                    if (livingHeighbor == 2 || livingHeighbor == 2)
+                        masTemp[_x, _y] = 1;
+                    else masTemp[_x, _y] = 0;
+                }
+
+                Console.Write(livingHeighbor);
             }
 
         }
+        //mas = masTemp;
+    }
+
+    static void CheckHeighbors(int[,] mas)
+    {
+
     }
 
     static void GameMoney()
