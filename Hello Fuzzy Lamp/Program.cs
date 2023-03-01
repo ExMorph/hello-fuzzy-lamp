@@ -2,6 +2,7 @@
 
 internal class Program
 {
+    static int maxIndex;
     private static void Main(string[] args)
     {
         GameLife();
@@ -9,58 +10,6 @@ internal class Program
         //    GameLife();
     }
 
-    static void HelloBoy()
-    {
-        Console.Write("Введите свое имя: ");
-        var name = Console.ReadLine();
-        Console.WriteLine($"Привет {name}");
-    }
-    static void LiteralsCheck()
-    {
-        Console.WriteLine("Любишь какать?"+'\n'+ "Люби и ж" + '\x48' + "пу подмывать!");
-        Console.Write('\n');
-        Console.WriteLine("Строка? \nЕщё одна!");
-    }
-
-    static void CheckOperand()
-    {
-
-        Console.WriteLine("\nПроверка операнда");
-        int a, b = 2, c;
-        //a = b = c;  ERROR - буква C пустая ЁПТА
-        a = b = c = 34;
-        Console.WriteLine(a + " " + b + " " + c);
-    }
-
-    static void LostData()
-    {
-        Console.WriteLine("\nПроверка потери битовых данных");
-
-        int a = 33;
-        int b = 600;
-        Console.WriteLine($"Было в int {a} + {b} = {a+b}");
-
-        a = (byte)a;
-        b = (byte)b;
-        Console.WriteLine($"Стало в byte {a} + {b} = {a + b}");
-
-        byte c = (byte)(a + b);
-        Console.WriteLine(c);
-
-        try
-        {
-            Console.Write("Введите 1ю цифру для проверки потери битовых данных: ");
-            a = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Введите 2ю цифру для проверки потери битовых данных: ");
-            b = Convert.ToInt32(Console.ReadLine());
-            c = checked((byte)(a + b));
-            Console.WriteLine(c);
-        }
-        catch (OverflowException ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
     public static int ReadLineInt()
     {
         int checkedNum = 0;
@@ -85,15 +34,12 @@ internal class Program
         int massSize = ReadLineInt();
 
         int[,] mas = new int[massSize, massSize];
-
-        int x = mas.GetUpperBound(0);
-        int y = mas.GetUpperBound(1);
-        Console.WriteLine($"x = {x} y = {y}");
+        maxIndex = massSize - 1;
 
         //Рандомизация значений
-        for (int i = 0; i <= x; i++)
+        for (int i = 0; i <= maxIndex; i++)
         {
-            for (int j = 0; j <= y; j++)
+            for (int j = 0; j <= maxIndex; j++)
             {
                 mas[i, j] = new Random().Next(0,2);
             }
@@ -107,14 +53,11 @@ internal class Program
 
     static void GameLifeCycle(int[,] mas)
     {
-        int x = mas.GetUpperBound(0);
-        int y = mas.GetUpperBound(1);
-
         //Рисование картины
-        for (int i = 0; i <= x; i++)
+        for (int i = 0; i <= maxIndex; i++)
         {
             Console.Write($"\n");
-            for (int j = 0; j <= y; j++)
+            for (int j = 0; j <= maxIndex; j++)
             {
                 Console.Write(mas[i, j]);
             }
@@ -123,53 +66,14 @@ internal class Program
 
         //Подсчет соседей
         Console.Write('\n');
-        int[,] masTemp = mas;
+        int[,] masTemp = new int[maxIndex + 1, maxIndex + 1];
 
-        for (int _x = 0; _x <= x; _x++)
+        for (int _x = 0; _x <= maxIndex; _x++)
         {
             Console.Write('\n');
-            for (int _y = 0; _y <= y; _y++)
+            for (int _y = 0; _y <= maxIndex; _y++)
             {
-                int livingHeighbor = 0;
-                
-                //1st line
-                if (_x > 0)
-                {
-                    if (_y > 0)
-                        if (mas[_x - 1, _y - 1] > 0) 
-                            livingHeighbor++;
-
-                    if (mas[_x - 1, _y] > 0) 
-                        livingHeighbor++;
-
-                    if (_y < y)
-                        if (mas[_x - 1, _y + 1] > 0) 
-                            livingHeighbor++;
-                }
-
-                //2nd line
-                if (_y > 0) 
-                    if (mas[_x, _y - 1] > 0) 
-                        livingHeighbor++;
-
-                if (_y < y) 
-                    if (mas[_x, _y + 1] > 0) 
-                        livingHeighbor++;
-                
-                //3rd line
-                if (_x < x)
-                {
-                    if (_y > 0)
-                        if (mas[_x + 1, _y - 1] > 0) 
-                            livingHeighbor++;
-
-                    if (mas[_x + 1, _y] > 0) 
-                        livingHeighbor++;
-
-                    if (_y < y)
-                        if (mas[_x + 1, _y + 1] > 0) 
-                            livingHeighbor++;
-                }
+                int livingHeighbor = CalcHeighbors(mas, _x, _y);
 
                 //Check неживая
                 if (mas[_x, _y] == 0 && livingHeighbor >= 3)
@@ -188,122 +92,58 @@ internal class Program
             }
 
         }
-        //mas = masTemp;
+        mas = masTemp;
     }
 
-    static void CheckHeighbors(int[,] mas)
+    static int CalcHeighbors(int[,] mas, int _x, int _y)
     {
+        int livingHeighbor = 0;
 
+        //1st line
+        if (_x > 0)
+        {
+            if (_y > 0)
+                if (mas[_x - 1, _y - 1] > 0)
+                    livingHeighbor++;
+
+            if (mas[_x - 1, _y] > 0)
+                livingHeighbor++;
+
+            if (_y < maxIndex)
+                if (mas[_x - 1, _y + 1] > 0)
+                    livingHeighbor++;
+        }
+
+        //2nd line
+        if (_y > 0)
+            if (mas[_x, _y - 1] > 0)
+                livingHeighbor++;
+
+        if (_y < maxIndex)
+            if (mas[_x, _y + 1] > 0)
+                livingHeighbor++;
+
+        //3rd line
+        if (_x < maxIndex)
+        {
+            if (_y > 0)
+                if (mas[_x + 1, _y - 1] > 0)
+                    livingHeighbor++;
+
+            if (mas[_x + 1, _y] > 0)
+                livingHeighbor++;
+
+            if (_y < maxIndex)
+                if (mas[_x + 1, _y + 1] > 0)
+                    livingHeighbor++;
+        }
+
+        return livingHeighbor;
     }
 
-    static void GameMoney()
+    static void RenderLife(int[,] mas)
     {
-        const int goldFinded = 900;
-        int alivePiligrimms;
-        Console.WriteLine("Добро пожаловать в Утраченный клад!\n");
-        Console.WriteLine("Пожалуйста, введите следующие данные для настройки приключения");
 
-        Console.WriteLine("Введите целое число:");
-        int num1 = ReadLineInt();
-        alivePiligrimms = num1;
-
-        Console.WriteLine("Введите число меньше предыдущего:");
-        #region Check num1 > num2
-
-        int num2 = ReadLineInt();
-        while (num1 <= num2)
-        {
-            Console.WriteLine("Значение должно быть меньше предыдущего!");
-            Console.WriteLine("Введите число меньше предыдущего:");
-            num2 = ReadLineInt();
-        }
-        #endregion
-
-        Console.WriteLine("Введите свое имя:");
-        string playerName = Console.ReadLine();
-
-        #region Check Quantity not sub zero
-
-        if (alivePiligrimms <= 1)
-        {
-            Console.WriteLine("Что-то не так!");
-            switch (alivePiligrimms)
-            {
-                case 1:
-                    Console.WriteLine($"Никто не пришел на фан встречу и {playerName} никуда не отправился");
-                    return;
-                case 0:
-                    Console.WriteLine($"Никто, включая {playerName}, ни в какое путешествие не отправился");
-                    return;
-                case -1:
-                    Console.WriteLine($"Из-за брата {playerName}, который всех споил, в ещё не начавшейся экспедиции погибло больше людей, чем готовилось к отправке\n Печально :( ");
-                    return;
-                default:
-                    Console.WriteLine($"Группа из мертвых душ, среди которых не было и {playerName},  отправилась в поход за сокровищами Древних Дворфов. \n" +
-                        $" Как можно было догадаться, никто не вернулся ");
-                    return;
-
-            }
-        }
-        #endregion
-
-        Console.WriteLine($"Группа из {num1} храбрых приключенцев отправилась в поход за сокровищами Древних Дворфов. " +
-            $"Их возглавлял легендарный рейнджер, {playerName}.\n");
-
-        Console.WriteLine($"По пути на путешественников напала толпа злобных огров!" +
-            $" Нашим героям удалось отбиться, но ценой жизни {num2} товарищей." +
-            $" Всего в живых осталось {alivePiligrimms -= num2} приключенцев.");
-
-        #region Проверка остатка после деления
-
-        if (goldFinded % (num1 - num2) > 0)
-        {
-            Console.WriteLine($"Они уже почти отчаялись найти сокровища, как вдруг им улыбнулась Фортуна." +
-            $" Они нашли сундук, в котором было {goldFinded} монет." +
-            $" {playerName} разделил золото поровну между всеми, а оставшиеся {goldFinded % (num1 - num2)} монеты оставил себе.");
-        }
-        else if (goldFinded % (num1 - num2) == 0)
-        {
-            Console.WriteLine($"Они уже почти отчаялись найти сокровища, как вдруг им улыбнулась Фортуна." +
-            $" Они нашли сундук, в котором было {goldFinded} монет." +
-            $" {playerName} разделил золото поровну между всеми.");
-        }
-        else if (goldFinded % (num1 - num2) >= goldFinded)
-        {
-            Console.WriteLine($"Они уже почти отчаялись найти сокровища, как вдруг им улыбнулась Фортуна." +
-            $" Они нашли сундук, в котором было {goldFinded} монет." +
-            $" {playerName} разделил золото поровну между всеми, а оставшиеся {goldFinded % (num1 - num2)} монет оставил себе.\n Жадный пидорюга!");
-        }
-        #endregion
-
-        Console.WriteLine($"Однако золото было проклято!");
-
-        #region Действие проклятия / Проверка живых приключенцев
-
-        while (alivePiligrimms >= 1) 
-        {
-            if (alivePiligrimms > 2)
-            {
-                Console.WriteLine($"1 приключенец  умер от проклятия и осталось {--alivePiligrimms}.");
-            }
-            else if (alivePiligrimms == 2)
-            {
-                Console.WriteLine($"1 приключенец умер от проклятия и остался только {playerName}.");
-                break;
-            }
-            else if (alivePiligrimms == 1)
-            {
-                Console.WriteLine($"Но с {playerName} ничего не случилось, и он отправился домой.");
-                break;
-            }
-            else 
-            {
-                Console.WriteLine($"Что-то пошло не так, но мы уверены, что {playerName} остался жив.");
-            }
-        }
-        #endregion
-
-        Console.WriteLine("Конец!");
     }
 
     static bool AskRestartGame()
