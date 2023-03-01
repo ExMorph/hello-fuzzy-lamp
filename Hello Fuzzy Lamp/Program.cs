@@ -3,6 +3,8 @@
 internal class Program
 {
     static int maxIndex;
+    static float timer;
+
     private static void Main(string[] args)
     {
         GameLife();
@@ -46,12 +48,16 @@ internal class Program
             
         }
 
-        Console.WriteLine("\nВведите S");
+        
         while ("S" != Console.ReadLine())
-            GameLifeCycle(mas);
+        {
+            Console.WriteLine("\nВведите S");
+            GameLifeCycle(ref mas);
+        }
+            
     }
 
-    static void GameLifeCycle(int[,] mas)
+    static void GameLifeCycle(ref int[,] mas)
     {
         //Рисование картины
         for (int i = 0; i <= maxIndex; i++)
@@ -88,10 +94,11 @@ internal class Program
                     else masTemp[_x, _y] = 0;
                 }
 
-                Console.Write(livingHeighbor);
+                //Console.Write(livingHeighbor);
             }
 
         }
+
         mas = masTemp;
     }
 
