@@ -4,7 +4,7 @@ using System.Timers;
 internal class Program
 {
     static int maxIndex;
-    static float timerCouldown;
+    static int timerCouldown;
     static int[,] mas;
     static int livedPoints;
 
@@ -12,7 +12,20 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        GameLifeStart();
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        GameLifeInit();
+
+        while (!AskRestartGame())
+        {
+            GameLifeInit();
+        }
+    }
+
+    enum STATUS
+    {
+        LIVING,
+        STABLE,
+        DYING
     }
 
     public static int ReadLineInt()
@@ -33,7 +46,7 @@ internal class Program
         return checkedNum;
     }
 
-    static void GameLifeStart()
+    static void GameLifeInit()
     {
         Console.WriteLine("Введите размер сетки");
         int massSize = ReadLineInt();
@@ -48,38 +61,46 @@ internal class Program
             {
                 mas[i, j] = new Random().Next(0,2);
             }
-            
         }
 
         Console.WriteLine("Введите время для обновления данных (сек)");
         timerCouldown = ReadLineInt()*1000;
 
-        Console.WriteLine("\nВведите S");
-        while ("S" != Console.ReadLine())
+        string input = string.Empty;
+        do
         {
             Console.WriteLine("\nВведите S");
-            GameLifeCycle();
+            input = Console.ReadLine();
         }
+        while ("S" != input);
 
-        SetTimer();
-        
+        GameLifeProcess();
+
         Console.ReadLine();
-        aTimer.Stop();
-        aTimer.Dispose();
     }
 
-    static void GameLifeCycle()
+    static void GameLifeProcess()
     {
-        //Рисование картины
-        for (int i = 0; i <= maxIndex; i++)
+        while (true)
         {
-            Console.Write($"\n");
-            for (int j = 0; j <= maxIndex; j++)
+            var status = GameLifeCycle();
+            if (status == STATUS.DYING)
             {
-                Console.Write(mas[i, j]);
+                Console.WriteLine("\nВсе клетки пусты. Игра окончена");
+                break;
             }
+            else if (status == STATUS.STABLE) 
+            {
+                Console.WriteLine("\nКолония не развивается. Игра окончена");
+                break;
+            }
+            Thread.Sleep(timerCouldown);
         }
+    }
 
+    static STATUS GameLifeCycle()
+    {
+        DrawGrid();
         //Подсчет соседей
         //Console.Write('\n');
         int[,] masTemp = new int[maxIndex + 1, maxIndex + 1];
@@ -113,9 +134,40 @@ internal class Program
         {
             if (i == 1) livedPoints++;
         }
-        if (livedPoints == 0) Console.WriteLine("Все клетки пусты. Игра окончена");
+        if (livedPoints == 0) return STATUS.DYING;
+        if (ArraysEqual(masTemp)) return STATUS.STABLE;
 
         mas = masTemp;
+
+        return STATUS.LIVING;
+
+    }
+
+    static bool ArraysEqual(int[,] masTemp)
+    {
+        for (int i = 0; i <= maxIndex; i++)
+        {
+            for (int j = 0; j <= maxIndex; j++)
+            {
+                if(mas[i, j] != masTemp[i, j])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    static void DrawGrid()
+    {
+        Console.Clear();
+        //Рисование картины
+        for (int i = 0; i <= maxIndex; i++)
+        {
+            Console.Write($"\n");
+            for (int j = 0; j <= maxIndex; j++)
+            {
+                Console.Write(mas[i, j] > 0 ? "\u25CF" : "\u25CB");
+            }
+        }
     }
 
     static int CalcHeighbors(int[,] mas, int _x, int _y)
@@ -162,22 +214,6 @@ internal class Program
         }
 
         return livingHeighbor;
-    }
-
-    private static void SetTimer()
-    {
-        // Create a timer with a two second interval.
-        aTimer = new System.Timers.Timer(timerCouldown);
-        // Hook up the Elapsed event for the timer. 
-        aTimer.Elapsed += OnTimedEvent;
-        aTimer.AutoReset = true;
-        aTimer.Enabled = true;
-    }
-
-    private static void OnTimedEvent(Object source, ElapsedEventArgs e)
-    {
-        Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
-                          e.SignalTime);
     }
 
     static bool AskRestartGame()
