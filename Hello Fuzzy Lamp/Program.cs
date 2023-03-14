@@ -1,14 +1,30 @@
-﻿using System.Reflection.Metadata.Ecma335;
+﻿using Hello_Fuzzy_Lamp;
+using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Timers;
+
 
 internal class Program
 {
-
-    private static System.Timers.Timer aTimer;
+    public static Pet myPet = new Pet();
+    static int petPoints = 0;
 
     private static void Main(string[] args)
     {
-        //GameLifeInit();
+        Console.WriteLine("С питомцем можно взаимодействовать посредством ввода в консоль числа от 0 до 3");
+        Console.WriteLine($"\n");
+        Console.WriteLine("0 - выйти из игры");
+        Console.WriteLine($"1 - узнать настроение питомца.\nУровень настроения = голод + скука.\nЕсли настроение > 15 - питомец в ярости, >10 - грустит, >5 - более-менее, если 5 или меньше, то он счастлив");
+        Console.WriteLine("2 - покормить питомца: голод падает на 4 ед");
+        Console.WriteLine("3 - поиграть с питомцем - скука падает на 4 ед");
+        Console.WriteLine($"\n");
+        Console.WriteLine("Выбор: ");
+
+        while (ReadLineInt() != 0 || petPoints < 10)
+        {
+            ChoseAction();
+        }
+        Console.WriteLine($"Всего ходов: {MovesManager.totalMoves}");
 
         while (!AskRestartGame())
         {
@@ -16,11 +32,34 @@ internal class Program
         }
     }
 
-    enum STATUS
+    static void ChoseAction()
     {
-        LIVING,
-        STABLE,
-        DYING
+        switch (ReadLineInt()) {
+            case 1:
+                Console.WriteLine("Узнать настроение");
+                Console.WriteLine($"Статус: {petPoints} \n{myPet.hungry} \n{myPet.boredom}");
+                break;
+            case 2:
+                Console.WriteLine("Подкормка");
+                myPet.hungry -= 4;
+                break;
+            case 3:
+                Console.WriteLine("Поиграть");
+                myPet.boredom -= 4;
+                break;
+            default:
+                Console.WriteLine("Пропуск");
+                break;
+        }
+        AddPionts();
+        petPoints = myPet.hungry + myPet.boredom;
+    }
+
+    static void AddPionts()
+    {
+        myPet.hungry++;
+        myPet.boredom++;
+        MovesManager.totalMoves++;
     }
 
     public static int ReadLineInt()
