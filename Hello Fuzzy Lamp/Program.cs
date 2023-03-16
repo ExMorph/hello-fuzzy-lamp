@@ -7,40 +7,61 @@ using System.Timers;
 internal class Program
 {
     public static Pet myPet = new Pet();
-    static int petPoints = 0;
+    static int petMood = 0;
+    static bool canPlay = true;
 
     private static void Main(string[] args)
     {
-        Console.WriteLine("С питомцем можно взаимодействовать посредством ввода в консоль числа от 0 до 3");
-        Console.WriteLine($"\n");
-        Console.WriteLine("0 - выйти из игры");
-        Console.WriteLine($"1 - узнать настроение питомца.\nУровень настроения = голод + скука.\nЕсли настроение > 15 - питомец в ярости, >10 - грустит, >5 - более-менее, если 5 или меньше, то он счастлив");
-        Console.WriteLine("2 - покормить питомца: голод падает на 4 ед");
-        Console.WriteLine("3 - поиграть с питомцем - скука падает на 4 ед");
-        Console.WriteLine($"\n");
-        Console.WriteLine("Выбор: ");
+        Game();
 
-        while (ReadLineInt() != 0 || petPoints < 10)
+        while (AskRestartGame())
+        {
+            canPlay = true;
+            myPet.hungry = 0;
+            myPet.boredom = 0;
+            petMood = 0;
+
+            Game();
+        }
+    }
+
+    static void Game()
+    {
+        Console.WriteLine("С питомцем можно взаимодействовать посредством ввода в консоль числа от 0 до 3");
+
+        while (canPlay)
         {
             ChoseAction();
         }
-        Console.WriteLine($"Всего ходов: {MovesManager.totalMoves}");
 
-        while (!AskRestartGame())
-        {
-            //GameLifeInit();
-        }
+        Console.WriteLine($"Питомец умер");
+        Console.WriteLine($"\nВсего ходов: {MovesManager.totalMoves}");
     }
 
     static void ChoseAction()
     {
+        #region WriteText
+        Console.WriteLine($"\n");
+        Console.WriteLine("0 - Выйти из игры");
+        Console.WriteLine("1 - Узнать настроение питомца.");
+        Console.WriteLine("2 - Покормить питомца");
+        Console.WriteLine("3 - Поиграть с питомцем");
+        Console.WriteLine($"\n");
+        Console.WriteLine("Выбор: ");
+        #endregion
+
         switch (ReadLineInt()) {
+            case 0:
+                canPlay = false;
+                Console.WriteLine("Выход");
+                break;
             case 1:
                 Console.WriteLine("Узнать настроение");
-                Console.WriteLine($"Статус: {petPoints} \n{myPet.hungry} \n{myPet.boredom}");
+                Console.WriteLine(CheckMood());
+                //Добавить ещё значения
                 break;
             case 2:
-                Console.WriteLine("Подкормка");
+                Console.WriteLine("Кормление");
                 myPet.hungry -= 4;
                 break;
             case 3:
@@ -52,7 +73,24 @@ internal class Program
                 break;
         }
         AddPionts();
-        petPoints = myPet.hungry + myPet.boredom;
+
+        if (myPet.hungry >= 10 || myPet.boredom >= 10) canPlay = false;
+    }
+
+    static string CheckMood()
+    {
+        petMood = myPet.hungry + myPet.boredom;
+        if (petMood > 15) return "Я в ярости!";
+        else if (petMood > 10) return "Мне грустно :(";
+        else if (petMood > 5) return "Мне неплохо :|";
+        else return "Я счастлив!";
+    }
+
+    static void CorrectRange(ref int checkValue)
+    {
+        //Уверен что можно написать одной строчкой
+        checkValue = Math.Min(10, checkValue);
+        checkValue = Math.Max(0, checkValue);
     }
 
     static void AddPionts()
@@ -60,6 +98,9 @@ internal class Program
         myPet.hungry++;
         myPet.boredom++;
         MovesManager.totalMoves++;
+
+        CorrectRange(ref myPet.hungry);
+        CorrectRange(ref myPet.boredom);
     }
 
     public static int ReadLineInt()
@@ -85,7 +126,6 @@ internal class Program
         Console.WriteLine("\nПерезапустить игру?\nY/N");
         if (Console.ReadLine() == "Y" || Console.ReadLine() == "y")
         {
-            //Game(); //useless
             return true;
         }
         else
