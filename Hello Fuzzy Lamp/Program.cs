@@ -17,8 +17,8 @@ internal class Program
         while (AskRestartGame())
         {
             canPlay = true;
-            myPet.hungry = 0;
-            myPet.boredom = 0;
+            myPet.Hungry = 0;
+            myPet.Boredom = 0;
             petMood = 0;
 
             Game();
@@ -62,11 +62,11 @@ internal class Program
                 break;
             case 2:
                 Console.WriteLine("Кормление");
-                myPet.hungry -= 4;
+                myPet.Hungry -= 4;
                 break;
             case 3:
                 Console.WriteLine("Поиграть");
-                myPet.boredom -= 4;
+                myPet.Boredom -= 4;
                 break;
             default:
                 Console.WriteLine("Пропуск");
@@ -74,33 +74,23 @@ internal class Program
         }
         AddPionts();
 
-        if (myPet.hungry >= 10 || myPet.boredom >= 10) canPlay = false;
+        if (myPet.Hungry >= 10 || myPet.Boredom >= 10) canPlay = false;
     }
 
     static string CheckMood()
     {
-        petMood = myPet.hungry + myPet.boredom;
+        petMood = myPet.Hungry + myPet.Boredom;
         if (petMood > 15) return "Я в ярости!";
         else if (petMood > 10) return "Мне грустно :(";
         else if (petMood > 5) return "Мне неплохо :|";
         else return "Я счастлив!";
     }
 
-    static void CorrectRange(ref int checkValue)
-    {
-        //Уверен что можно написать одной строчкой
-        checkValue = Math.Min(10, checkValue);
-        checkValue = Math.Max(0, checkValue);
-    }
-
     static void AddPionts()
     {
-        myPet.hungry++;
-        myPet.boredom++;
+        myPet.Hungry++;
+        myPet.Boredom++;
         MovesManager.totalMoves++;
-
-        CorrectRange(ref myPet.hungry);
-        CorrectRange(ref myPet.boredom);
     }
 
     public static int ReadLineInt()
